@@ -24,10 +24,30 @@
       top:0;left:0;right:0;bottom:0;
       background:radial-gradient(circle at top left, rgba(0,255,255,0.5), transparent 60%);
       animation:slideLight 2s ease-out forwards;
+      z-index:0;
     }
     @keyframes slideLight{
       from{background-position:-40% -40%;}
       to{background-position:100% -40%;}
+    }
+    .bg-cover{
+      position:fixed;
+      top:0;left:0;right:0;bottom:0;
+      background-size:cover;
+      background-position:center;
+      filter:blur(20px) brightness(0.4);
+      z-index:0;
+      will-change: transform;
+    }
+    .dot{
+      position:fixed;
+      bottom:-20px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.4);
+      animation:floatUp 6s linear forwards;
+    }
+    @keyframes floatUp{
+      to{transform:translateY(-120vh);opacity:0;}
     }
     .wrap{
       min-height:100%;
@@ -38,6 +58,7 @@
       box-sizing:border-box;
       position:relative;
       z-index:1;
+      will-change: transform;
     }
     .card{
       width:100%;
@@ -47,6 +68,7 @@
       padding:40px;
       box-shadow:0 10px 30px rgba(2,6,23,0.6);
       text-align:center;
+      backdrop-filter:blur(10px);
     }
     .avatar{
       width:120px;height:120px;border-radius:999px;display:inline-block;margin:0 auto 22px;
@@ -64,7 +86,8 @@
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div id="bg"></div>
+  <div class="wrap" id="wrap">
     <main class="card" role="main">
       <div class="avatar"><img src="profile.jpg" alt="profile image"></div>
       <h1>about me</h1>
@@ -84,14 +107,23 @@
         const res = await fetch(url);
         const data = await res.json();
         const track = data.recenttracks.track[0];
+        const bg = document.getElementById("bg");
         if(track){
           const name = track.name;
           const artist = track.artist["#text"];
           const nowPlaying = track["@attr"] && track["@attr"].nowplaying === "true";
+          const image = track.image && track.image.length ? track.image[track.image.length-1]["#text"] : "";
           if(nowPlaying){
             document.getElementById("lastfm").textContent = `im currently listening to: ${name} — ${artist}`;
+            if(image){
+              bg.className = "bg-cover";
+              bg.style.backgroundImage = `url(${image})`;
+              document.body.classList.add("dots-active");
+            }
           } else {
             document.getElementById("lastfm").textContent = `last listened to: ${name} — ${artist}`;
+            bg.removeAttribute("style");
+            bg.className="";
           }
         } else {
           document.getElementById("lastfm").textContent = "no recent scrobbles";
@@ -100,7 +132,33 @@
         document.getElementById("lastfm").textContent = "failed to load scrobble";
       }
     }
+    function spawnDot(){
+      const dot = document.createElement("div");
+      dot.className="dot";
+      const size = Math.random()*6+4;
+      dot.style.width = dot.style.height = size+"px";
+      dot.style.left = Math.random()*100+"%";
+      document.body.appendChild(dot);
+      setTimeout(()=>dot.remove(),6000);
+    }
+    setInterval(spawnDot,400);
     fetchScrobble();
+
+    // parallax effect
+    document.addEventListener("mousemove", e => {
+      const wrap = document.getElementById("wrap");
+      const bg = document.getElementById("bg");
+      const x = (e.clientX / window.innerWidth - 0.5);
+      const y = (e.clientY / window.innerHeight - 0.5);
+      const strength = 20; // profile box strength
+      const bgStrength = 40; // bg double sensitivity
+      wrap.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
+      if(bg.classList.contains("bg-cover")){
+        bg.style.transform = `translate(${x * bgStrength}px, ${y * bgStrength}px)`;
+      } else {
+        bg.style.transform = "";
+      }
+    });
   </script>
 </body>
 </html>
