@@ -398,7 +398,7 @@
 
     // Visualizer initialization
     function initVisualizer() {
-      if (audioCtx) return;
+      if (audioCtx && analyser) return; // Already initialized
       try {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioCtx.createAnalyser();
@@ -412,6 +412,11 @@
         console.warn("Web Audio API not supported or blocked:", e);
       }
     }
+
+    // Safety fallback: ensure visualizer starts whenever audio plays
+    audio.onplaying = () => {
+      if (hasInteracted) initVisualizer();
+    };
 
     function vibrateLoop() {
       if (!analyser || audio.paused || audio.muted || !vibrationEnabled) {
@@ -491,10 +496,12 @@
           // Update audio preview
           if (previewUrl && previewUrl !== currentPreviewUrl) {
             currentPreviewUrl = previewUrl;
+            audio.crossOrigin = "anonymous";
             audio.src = previewUrl;
-
+            
             // Try to autoplay once the source is set
             if (hasInteracted) {
+              initVisualizer();
               audio.play().catch(e => console.log("Autoplay failed:", e));
             } else {
               // Attempt unmuted autoplay, if it fails, try muted autoplay
@@ -560,11 +567,13 @@
       if (!hasInteracted) {
         hasInteracted = true;
         
-        // Start audio and visualizer
+        // Always try to init visualizer (even if track hasn't arrived)
+        initVisualizer();
+
+        // Start audio if track arrived
         if (currentPreviewUrl) {
           audio.muted = false;
           audio.play().then(() => {
-            initVisualizer();
             volWave.style.display = "block";
             muteSlash.style.display = "none";
             pulse.style.opacity = "1";
