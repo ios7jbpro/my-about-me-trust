@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,67 +9,101 @@
     /* Define the custom monospace font */
     @font-face {
       font-family: 'CustomMono';
-      src: url('./font.woff2') format('woff2'); /* Adjust path if needed */
-      font-display: swap; /* Optimize loading */
+      src: url('./font.woff2') format('woff2');
+      /* Adjust path if needed */
+      font-display: swap;
+      /* Optimize loading */
     }
 
     :root {
-      --bg: #000000; /* Black background */
-      --text: #ffffff; /* White text */
-      --muted: #cccccc; /* Light grey for muted text */
-      --accent: #00ffff; /* Cyan accent color */
+      --bg: #000000;
+      /* Black background */
+      --text: #ffffff;
+      /* White text */
+      --muted: #cccccc;
+      /* Light grey for muted text */
+      --accent: #00ffff;
+      /* Cyan accent color */
       color-scheme: dark;
     }
 
-    html, body {
+    html,
+    body {
       height: 100%;
       margin: 0;
       padding: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: 'CustomMono', 'Courier New', Courier, monospace; /* Use custom font, fallback to system monospace */
-      overflow-x: hidden; /* Prevent horizontal scroll */
+      font-family: 'CustomMono', 'Courier New', Courier, monospace;
+      overflow-x: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center; /* Center content vertically */
-      text-align: center; /* Center text content */
+      justify-content: center;
+      text-align: center;
       box-sizing: border-box;
+      position: relative;
+      width: 100%;
     }
 
-    /* Optional: Add a subtle glow effect to the body */
+    /* Dynamic blurred background layer */
+    .bg-artwork {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background-size: cover;
+      background-position: center;
+      filter: blur(50px) brightness(0.35);
+      /* Dim and blur for readability */
+      opacity: 0;
+      transition: opacity 2s ease-in-out, background-image 2s ease-in-out;
+      pointer-events: none;
+    }
+
     body {
-      box-shadow: inset 0 0 100px rgba(0, 255, 255, 0.05); /* Very subtle cyan glow */
+      box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.8);
+      /* Darken edges for vignette effect */
     }
 
     .content {
-      /* Container for the content, add some padding for breathing room */
       padding: 2rem;
-      max-width: 800px; /* Limit max width for readability on large screens */
-      width: 90%; /* Responsive width */
+      max-width: 900px;
+      width: 90%;
+      position: relative;
+      z-index: 10;
+      /* Ensure content is above background */
     }
 
     .avatar {
       width: 120px;
       height: 120px;
-      border-radius: 50%; /* Circular avatar */
-      display: block; /* Make it block for centering */
-      margin: 0 auto 1.5rem; /* Center and add bottom margin */
+      border-radius: 50%;
+      /* Circular avatar */
+      display: block;
+      /* Make it block for centering */
+      margin: 0 auto 1.5rem;
+      /* Center and add bottom margin */
       overflow: hidden;
-      border: 1px solid var(--muted); /* Optional subtle border */
+      border: 1px solid var(--muted);
+      /* Optional subtle border */
     }
 
     .avatar img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block; /* Ensures no extra space below image */
+      display: block;
+      /* Ensures no extra space below image */
     }
 
     h1 {
       margin: 0 0 1rem;
       font-size: 1.8rem;
-      letter-spacing: 0.05rem; /* Slight letter spacing for monospace */
+      letter-spacing: 0.05rem;
+      /* Slight letter spacing for monospace */
       color: var(--text);
     }
 
@@ -85,15 +120,20 @@
 
     a.btn {
       display: inline-block;
-      margin: 0 0.5rem 0.5rem 0; /* Space between buttons */
+      margin: 0 0.5rem 0.5rem 0;
+      /* Space between buttons */
       padding: 0.6rem 1.2rem;
-      border-radius: 4px; /* Sharp or slightly rounded corners */
+      border-radius: 4px;
+      /* Sharp or slightly rounded corners */
       background: transparent;
       color: var(--accent);
       text-decoration: none;
-      font-weight: normal; /* Keep font weight consistent */
-      border: 1px solid var(--accent); /* Bordered button style */
-      transition: background-color 0.3s, color 0.3s; /* Smooth hover transition */
+      font-weight: normal;
+      /* Keep font weight consistent */
+      border: 1px solid var(--accent);
+      /* Bordered button style */
+      transition: background-color 0.3s, color 0.3s;
+      /* Smooth hover transition */
     }
 
     a.btn:hover {
@@ -101,33 +141,195 @@
       color: var(--bg);
     }
 
-    .scrobble {
+    .scrobble-container {
       margin-top: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0.5rem;
+      border-top: 1px dashed var(--muted);
+    }
+
+    .scrobble {
       font-size: 0.9rem;
       color: var(--muted);
-      padding: 0.5rem;
-      border-top: 1px dashed var(--muted); /* Subtle top separator */
-      border-bottom: 1px dashed var(--muted); /* Subtle bottom separator */
+    }
+
+    .autoplay-hint {
+      font-size: 0.7rem;
+      color: var(--muted);
+      opacity: 0.5;
+      margin-top: 4px;
+      border-bottom: 1px dashed var(--muted);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
     }
 
     .edit-hint {
-      margin-top: 1.5rem;
       color: var(--muted);
       font-size: 0.8rem;
       font-style: italic;
     }
 
+    /* Audio toggle styling */
+    /* Audio toggle styling */
+    .audio-toggle {
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.4rem;
+      border-radius: 50%;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      position: relative;
+    }
+
+    .audio-toggle:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .audio-toggle svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .playing-animation {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 1px solid var(--accent);
+      animation: pulse 2s infinite;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+
+      100% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+    }
+
     /* Responsive adjustments */
     @media (max-width: 520px) {
-      h1 { font-size: 1.5rem; }
-      p.lead { font-size: 0.9rem; }
-      a.btn { padding: 0.5rem 1rem; font-size: 0.9rem; }
-      .scrobble { font-size: 0.8rem; }
-      .edit-hint { font-size: 0.7rem; }
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      p.lead {
+        font-size: 0.9rem;
+      }
+
+      a.btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .scrobble {
+        font-size: 0.8rem;
+      }
+
+      .edit-hint {
+        font-size: 0.7rem;
+      }
+
+      .audio-toggle {
+        bottom: 15px;
+        right: 15px;
+        padding: 0.6rem;
+      }
+    }
+
+    /* Top-right toggle button */
+    .vibe-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.5rem 0.8rem;
+      font-family: 'CustomMono', monospace;
+      font-size: 0.8rem;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .vibe-toggle:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .vibe-toggle.off {
+      border-color: var(--muted);
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    /* Intro Overlay */
+    #intro-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      cursor: pointer;
+      transition: opacity 1s ease, visibility 1s;
+    }
+
+    #intro-overlay.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .intro-text {
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      animation: intro-pulse 2s infinite;
+    }
+
+    @keyframes intro-pulse {
+      0% { opacity: 0.4; transform: scale(0.98); }
+      50% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0.4; transform: scale(0.98); }
     }
   </style>
 </head>
+
 <body>
+  <div id="intro-overlay">
+    <div class="intro-text">Click anywhere to see...</div>
+  </div>
+
+  <div id="bg-artwork" class="bg-artwork"></div>
+  <button id="vibe-toggle" class="vibe-toggle">VIBE: ON</button>
+  <audio id="audio-preview" crossorigin="anonymous" loop autoplay unmuted></audio>
+
   <div class="content">
     <div class="avatar">
       <img src="https://avatars.githubusercontent.com/u/71101500?v=4" alt="profile image">
@@ -141,11 +343,105 @@
       <a class="btn" href="https://ios7.xyz" target="_blank">my website</a>
       <a class="btn" href="https://github.com/ios7jbpro" target="_blank">my github</a>
     </div>
-    <div class="scrobble" id="lastfm">loading current track…</div>
+    <div class="scrobble-container">
+      <div class="scrobble" id="lastfm">loading current track…</div>
+      <div id="audio-toggle" class="audio-toggle" title="Mute/Unmute Demo">
+        <div id="pulse" class="playing-animation"></div>
+        <svg id="speaker-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path id="vol-wave" d="M15.54 8.46a5 5 0 0 1 0 7.08"></path>
+          <line id="mute-slash" x1="1" y1="1" x2="23" y2="23" style="display: none;"></line>
+        </svg>
+      </div>
+    </div>
+    <div class="autoplay-hint">this song is being autoplayed for you to hear a demo</div>
     <div class="edit-hint">linux sucks(i think)</div>
   </div>
 
   <script>
+    const audio = document.getElementById("audio-preview");
+    const audioToggle = document.getElementById("audio-toggle");
+    const volWave = document.getElementById("vol-wave");
+    const muteSlash = document.getElementById("mute-slash");
+    const pulse = document.getElementById("pulse");
+    const content = document.querySelector(".content");
+    const vibeToggle = document.getElementById("vibe-toggle");
+    const introOverlay = document.getElementById("intro-overlay");
+    let hasInteracted = false;
+    let currentPreviewUrl = "";
+    let audioCtx, analyser, source, dataArray;
+    let vibrationEnabled = localStorage.getItem("vibe_enabled") !== "false"; 
+
+    audio.volume = 0.3;
+    audio.muted = false;
+
+    // Initialize toggle state UI
+    function updateVibeToggleUI() {
+      vibeToggle.textContent = vibrationEnabled ? "VIBE: ON" : "VIBE: OFF";
+      if (vibrationEnabled) {
+        vibeToggle.classList.remove("off");
+      } else {
+        vibeToggle.classList.add("off");
+      }
+    }
+    updateVibeToggleUI();
+
+    vibeToggle.addEventListener("click", () => {
+      vibrationEnabled = !vibrationEnabled;
+      localStorage.setItem("vibe_enabled", vibrationEnabled);
+      updateVibeToggleUI();
+      if (!vibrationEnabled) {
+        content.style.transform = "scale(1) translate(0, 0)";
+      }
+    });
+
+    // Visualizer initialization
+    function initVisualizer() {
+      if (audioCtx) return;
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+        source = audioCtx.createMediaElementSource(audio);
+        source.connect(analyser);
+        analyser.connect(audioCtx.destination);
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
+        requestAnimationFrame(vibrateLoop);
+      } catch (e) {
+        console.warn("Web Audio API not supported or blocked:", e);
+      }
+    }
+
+    function vibrateLoop() {
+      if (!analyser || audio.paused || audio.muted || !vibrationEnabled) {
+        content.style.transform = "scale(1) translate(0, 0)";
+        requestAnimationFrame(vibrateLoop);
+        return;
+      }
+
+      analyser.getByteFrequencyData(dataArray);
+
+      // Focus on lower frequencies for a "bass-linked" vibration
+      let sum = 0;
+      const bassRange = 15;
+      for (let i = 0; i < bassRange; i++) {
+        sum += dataArray[i];
+      }
+      const average = sum / bassRange;
+
+      // Calculate scale and jitter for a stronger "speaker-like" vibration
+      const intensity = average / 255;
+      const scale = 1 + (intensity * 0.04); // Stronger pulse (up to 1.04x)
+      const jitterX = (Math.random() - 0.5) * (intensity * 4); // More noticeable jitter
+      const jitterY = (Math.random() - 0.5) * (intensity * 4);
+      const rotate = (Math.random() - 0.5) * (intensity * 1.5); // Add a tiny rotation shake
+
+      content.style.transform = `scale(${scale}) translate(${jitterX}px, ${jitterY}px) rotate(${rotate}deg)`;
+
+      requestAnimationFrame(vibrateLoop);
+    }
+
     async function fetchScrobble() {
       try {
         const apiKey = "d7e39af04fb7135b4e3fa8cae39bc1c3";
@@ -153,27 +449,142 @@
         const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${user}&api_key=${apiKey}&format=json&limit=1`;
         const res = await fetch(url);
         const data = await res.json();
-        const track = data.recenttracks?.track?.[0]; // Use optional chaining for safety
+        const track = data.recenttracks?.track?.[0];
+        const bgArtwork = document.getElementById("bg-artwork");
+
         if (track) {
           const name = track.name;
           const artist = track.artist["#text"];
-          const nowPlaying = track["@attr"]?.nowplaying === "true"; // Use optional chaining
+          const nowPlaying = track["@attr"]?.nowplaying === "true";
+
+          let artwork = track.image?.[track.image.length - 1]?.["#text"];
+          let previewUrl = "";
+
+          // Fetch artwork and preview from iTunes
+          try {
+            const itunesUrl = `https://itunes.apple.com/search?term=${encodeURIComponent(artist + " " + name)}&entity=song&limit=1`;
+            const itunesRes = await fetch(itunesUrl);
+            const itunesData = await itunesRes.json();
+            if (itunesData.resultCount > 0) {
+              const result = itunesData.results[0];
+              if (!artwork || artwork === "") {
+                artwork = result.artworkUrl100.replace("100x100bb.jpg", "1000x1000bb.jpg");
+              }
+              previewUrl = result.previewUrl;
+            }
+          } catch (ituneErr) {
+            console.warn("iTunes fetch failed:", ituneErr);
+          }
+
+          // Update background artwork
+          if (artwork && artwork !== "") {
+            const img = new Image();
+            img.onload = () => {
+              bgArtwork.style.backgroundImage = `url('${artwork}')`;
+              bgArtwork.style.opacity = "1";
+            };
+            img.src = artwork;
+          } else {
+            bgArtwork.style.opacity = "0";
+          }
+
+          // Update audio preview
+          if (previewUrl && previewUrl !== currentPreviewUrl) {
+            currentPreviewUrl = previewUrl;
+            audio.src = previewUrl;
+
+            // Try to autoplay once the source is set
+            if (hasInteracted) {
+              audio.play().catch(e => console.log("Autoplay failed:", e));
+            } else {
+              // Attempt unmuted autoplay, if it fails, try muted autoplay
+              audio.play().then(() => {
+                // Success unmuted!
+                volWave.style.display = "block";
+                muteSlash.style.display = "none";
+                pulse.style.opacity = "1";
+              }).catch(() => {
+                // Failed unmuted, try muted (browsers usually allow this)
+                audio.muted = true;
+                audio.play().then(() => {
+                  volWave.style.display = "none";
+                  muteSlash.style.display = "block";
+                  pulse.style.opacity = "0";
+                }).catch(e => console.log("All autoplay attempts failed:", e));
+              });
+            }
+          }
+
           if (nowPlaying) {
             document.getElementById("lastfm").textContent = `im currently listening to: ${name} — ${artist}`;
           } else {
-            document.getElementById("lastfm").textContent = `last listened to: ${name} — ${artist}`;
+            const date = track.date?.["#text"] || "recently";
+            document.getElementById("lastfm").textContent = `last listened to: ${name} — ${artist} (${date})`;
           }
         } else {
           document.getElementById("lastfm").textContent = "no recent scrobbs";
+          bgArtwork.style.opacity = "0";
         }
       } catch (e) {
-        console.error("Failed to fetch scrobble data:", e); // Log error to console
+        console.error("Failed to fetch scrobble data:", e);
         document.getElementById("lastfm").textContent = "failed to load scrobble";
+        document.getElementById("bg-artwork").style.opacity = "0";
       }
     }
 
+    // Audio controls
+    function toggleAudio() {
+      audio.muted = !audio.muted;
+      if (audio.muted) {
+        volWave.style.display = "none";
+        muteSlash.style.display = "block";
+        pulse.style.opacity = "0";
+      } else {
+        volWave.style.display = "block";
+        muteSlash.style.display = "none";
+        pulse.style.opacity = "1";
+        if (audio.paused) {
+          audio.play().catch(e => console.log("Playback failed:", e));
+        }
+      }
+    }
+
+    audioToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      hasInteracted = true;
+      toggleAudio();
+    });
+
+    // Handle Intro Overlay click
+    introOverlay.addEventListener("click", () => {
+      if (!hasInteracted) {
+        hasInteracted = true;
+        
+        // Start audio and visualizer
+        if (currentPreviewUrl) {
+          audio.muted = false;
+          audio.play().then(() => {
+            initVisualizer();
+            volWave.style.display = "block";
+            muteSlash.style.display = "none";
+            pulse.style.opacity = "1";
+          }).catch(e => console.log("Initial play failed:", e));
+        }
+
+        // Fade out overlay
+        introOverlay.classList.add("fade-out");
+        // Remove from DOM after fade
+        setTimeout(() => {
+          introOverlay.remove();
+        }, 1000);
+      }
+    });
+
     // Fetch scrobble data when the page loads
     fetchScrobble();
+    // Refresh every 30 seconds
+    setInterval(fetchScrobble, 30000);
   </script>
 </body>
+
 </html>
