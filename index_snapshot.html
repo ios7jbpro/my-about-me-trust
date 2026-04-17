@@ -67,7 +67,7 @@
       z-index: 0;
       background-size: cover;
       background-position: center;
-      filter: blur(50px) brightness(0.12);
+      filter: blur(50px) brightness(0.35);
       /* Dim and blur for readability */
       opacity: 0;
       transition: opacity 2s ease-in-out, background-image 2s ease-in-out;
@@ -80,205 +80,34 @@
     }
 
     .content {
+      padding: 2rem;
+      max-width: 900px;
+      width: 90%;
       position: relative;
       z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
+      /* Ensure content is above background */
     }
 
-    .layout-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      width: 90%;
-      max-width: 1200px;
-      margin: auto;
-      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .side-panel {
-      background: var(--discord-card);
-      border-radius: 12px;
-      width: 0;
-      opacity: 0;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(15px);
-      transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, padding 0.5s ease;
-      padding: 0;
-      height: 600px;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .layout-wrapper.expanded .side-panel {
-      width: 350px;
-      opacity: 1;
-      padding: 24px;
-    }
-
-    .expand-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s;
-    }
-
-    .expand-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .expand-btn img {
-      width: 16px;
-      height: 16px;
-    }
-
-    .repo-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      overflow-y: auto;
-      flex: 1;
-      padding-right: 8px;
-      font-family: 'Inter', sans-serif;
-    }
-
-    /* Custom Scrollbar for Repo List */
-    .repo-list::-webkit-scrollbar {
-      width: 4px;
-    }
-    .repo-list::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .repo-list::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-    }
-
-    .repo-card {
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      padding: 14px;
-      text-decoration: none;
-      color: inherit;
-      transition: all 0.2s ease;
-      display: block;
-    }
-
-    .repo-card:hover {
-      background: rgba(255, 255, 255, 0.03);
-      transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .repo-name {
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-      display: block;
-    }
-
-    .repo-desc {
-      font-size: 0.8rem;
-      color: var(--discord-muted);
-      line-height: 1.4;
-      margin-bottom: 12px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .repo-meta {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      font-size: 0.75rem;
-      color: var(--discord-muted);
-    }
-
-    .repo-lang-dot {
-      width: 8px;
-      height: 8px;
+    .avatar {
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
-      display: inline-block;
-      margin-right: 4px;
-    }
-
-    .calendar-container {
-      width: 100%;
-      overflow: hidden;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      display: flex;
-      justify-content: flex-end; /* Show the right (recent) part */
-    }
-
-    .calendar-img {
-      max-width: none; /* Allow it to be wider than container */
-      height: 105px;
+      /* Circular avatar */
       display: block;
-      filter: invert(1) hue-rotate(180deg) contrast(1.1) brightness(1.2);
-    }
-
-    .layout-wrapper.expanded .expand-btn {
-      transform: rotate(180deg);
-    }
-
-    .github-avatar {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
+      /* Make it block for centering */
+      margin: 0 auto 1.5rem;
+      /* Center and add bottom margin */
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--muted);
+      /* Optional subtle border */
     }
 
-    .github-avatar img {
+    .avatar img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-
-    .github-avatar-wrapper {
-      position: relative;
-      width: 50px;
-      height: 50px;
-      flex-shrink: 0;
-    }
-
-    .github-badge {
-      position: absolute;
-      bottom: -2px;
-      right: -2px;
-      width: 16px;
-      height: 16px;
-      background: var(--discord-card);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2px;
-      border: 2px solid var(--discord-card);
-    }
-
-    .github-badge img {
-      width: 100%;
-      height: 100%;
-      filter: invert(1);
+      display: block;
+      /* Ensures no extra space below image */
     }
 
     h1 {
@@ -297,31 +126,30 @@
     }
 
     .links {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 20px;
+      margin: 1.5rem 0;
     }
 
     a.btn {
-      flex: 1;
-      padding: 0.8rem;
+      display: inline-block;
+      margin: 0 0.5rem 0.5rem 0;
+      /* Space between buttons */
+      padding: 0.6rem 1.2rem;
       border-radius: 4px;
-      background: #4e5058; /* Discord Gray */
-      color: #ffffff;
+      /* Sharp or slightly rounded corners */
+      background: transparent;
+      color: var(--accent);
       text-decoration: none;
-      text-align: center;
-      font-weight: 500;
-      border: none;
-      transition: background-color 0.2s;
-      box-sizing: border-box;
-      font-size: 0.9rem;
-      white-space: nowrap;
-      font-family: 'Inter', sans-serif;
+      font-weight: normal;
+      /* Keep font weight consistent */
+      border: 1px solid var(--accent);
+      /* Bordered button style */
+      transition: background-color 0.3s, color 0.3s;
+      /* Smooth hover transition */
     }
 
     a.btn:hover {
-      background: #676a74;
-      color: #ffffff;
+      background: var(--accent);
+      color: var(--bg);
     }
 
     .scrobble-container {
@@ -407,21 +235,6 @@
     }
 
     /* Responsive adjustments */
-    @media (max-width: 850px) {
-      .layout-wrapper {
-        flex-direction: column;
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-      }
-
-      .layout-wrapper.expanded .side-panel {
-        width: 100%;
-        max-width: 450px;
-        height: auto;
-        min-height: 200px;
-      }
-    }
-
     @media (max-width: 520px) {
       h1 {
         font-size: 1.5rem;
@@ -451,29 +264,34 @@
       }
     }
 
-    /* Small Discord-style secondary button */
+    /* Top-right toggle button */
     .vibe-toggle {
-      background: #4e5058;
-      border: none;
-      color: #ffffff;
-      padding: 4px 10px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 500;
-      border-radius: 3px;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.5rem 0.8rem;
+      font-family: 'CustomMono', monospace;
+      font-size: 0.8rem;
       cursor: pointer;
-      transition: background-color 0.2s;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
     }
 
     .vibe-toggle:hover {
-      background: #676a74;
+      background: var(--accent);
+      color: var(--bg);
     }
 
     .vibe-toggle.off {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--discord-muted);
+      border-color: var(--muted);
+      color: var(--muted);
+      opacity: 0.6;
     }
 
     /* Intro Overlay */
@@ -513,24 +331,28 @@
     }
     /* Discord Rich Presence Card */
     .discord-card {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
       background: var(--discord-card);
-      border-radius: 12px;
-      padding: 24px;
+      border-radius: 8px;
+      padding: 16px;
       width: 100%;
-      max-width: 450px;
+      max-width: 300px;
       text-align: left;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
       transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateX(50px);
       pointer-events: auto;
     }
 
     .discord-card.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateX(0);
     }
 
     .discord-header {
@@ -542,8 +364,8 @@
 
     .discord-avatar-wrapper {
       position: relative;
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       flex-shrink: 0;
     }
 
@@ -558,10 +380,10 @@
       position: absolute;
       bottom: -2px;
       right: -2px;
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
-      border: 2px solid var(--discord-card);
+      border: 3px solid var(--discord-card);
     }
 
     .status-online { background: var(--discord-online); }
@@ -688,100 +510,69 @@
   </div>
 
   <div id="bg-artwork" class="bg-artwork"></div>
-  <canvas id="snow-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none;"></canvas>
+  <button id="vibe-toggle" class="vibe-toggle">VIBE: ON</button>
   <audio id="audio-preview" crossorigin="anonymous" loop autoplay unmuted></audio>
 
-  <div class="content">
-    <div id="layout-wrapper" class="layout-wrapper">
-      <!-- Discord Rich Presence Card as Main Container -->
-      <div id="discord-card" class="discord-card">
-        <div class="discord-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-          <!-- Dual PFPs -->
-          <div style="display: flex; align-items: center; gap: 16px;">
-            <div class="github-avatar-wrapper">
-              <div class="github-avatar">
-                <img src="https://avatars.githubusercontent.com/u/71101500?v=4" alt="github profile image">
-              </div>
-              <div class="github-badge">
-                <img src="github.png" alt="github icon">
-              </div>
-            </div>
-            <div class="discord-avatar-wrapper">
-              <img id="discord-avatar" class="discord-avatar" src="" alt="">
-              <div id="discord-status-dot" class="discord-status-dot"></div>
-            </div>
-            <div class="discord-user-info">
-              <div style="display: flex; align-items: baseline; gap: 4px;">
-                <span id="discord-username" class="discord-username">Loading...</span>
-              </div>
-              <span id="discord-status-text" class="discord-status-text">Connecting...</span>
-            </div>
-          </div>
-
-          <!-- Expand Button -->
-          <button id="expand-btn" class="expand-btn" title="Expand Details">
-            <img src="expand.png" alt="expand">
-          </button>
-        </div>
-
-        <div id="discord-activity" class="discord-activity" style="display: none;">
-          <div class="activity-image-wrapper">
-            <img id="activity-large-img" class="activity-large-img" src="" alt="">
-            <img id="activity-small-img" class="activity-small-img" src="" alt="" style="display: none;">
-          </div>
-          <div class="activity-info">
-            <div id="activity-name" class="activity-name"></div>
-            <div id="activity-details" class="activity-details"></div>
-            <div id="activity-state" class="activity-state"></div>
-            <div id="activity-timestamp" class="activity-timestamp"></div>
-          </div>
-        </div>
-
-        <!-- Main Website Content -->
-        <div style="margin-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 24px;">
-          <h1 style="font-size: 1.4rem; margin-bottom: 0.5rem;">about me</h1>
-          <p class="lead" style="font-size: 0.95rem; margin-bottom: 1.5rem;">You don't need to know anything about me. Actually message me and ask if you want to know.</p>
-          <p class="lead" style="font-style: italic; color: var(--accent); margin-bottom: 1.5rem;">"Yanlış kapı çaldınız beyler..."</p>
-          
-          <div class="links">
-            <a class="btn" href="https://ios7.xyz" target="_blank">My Website</a>
-            <a class="btn" href="https://github.com/ios7jbpro" target="_blank">My GitHub</a>
-          </div>
-
-          <div class="scrobble-container" style="border: none; margin-top: 1rem; padding: 0.8rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
-            <div class="scrobble" id="lastfm">loading current track…</div>
-            <div id="audio-toggle" class="audio-toggle" title="Mute/Unmute Demo">
-              <div id="pulse" class="playing-animation"></div>
-              <svg id="speaker-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                <path id="vol-wave" d="M15.54 8.46a5 5 0 0 1 0 7.08"></path>
-                <line id="mute-slash" x1="1" y1="1" x2="23" y2="23" style="display: none;"></line>
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="discord-footer" style="display: flex; justify-content: space-between; align-items: center;">
-          <span>Powered by <a href="https://github.com/Phineas/lanyard" target="_blank">Lanyard</a></span>
-          <button id="vibe-toggle" class="vibe-toggle">SNOW: ON</button>
-        </div>
+  <!-- Discord Rich Presence Card -->
+  <div id="discord-card" class="discord-card">
+    <div class="discord-header">
+      <div class="discord-avatar-wrapper">
+        <img id="discord-avatar" class="discord-avatar" src="" alt="">
+        <div id="discord-status-dot" class="discord-status-dot"></div>
       </div>
-
-      <!-- Side Panel for Repositories -->
-      <div id="side-panel" class="side-panel" style="background: rgba(30, 31, 34, 0.85);">
-        <div id="repo-list" class="repo-list" style="flex: 1; overflow-y: auto;">
-          <div style="color: var(--discord-muted); font-size: 0.9rem;">Loading dashboard...</div>
+      <div class="discord-user-info">
+        <div style="display: flex; align-items: baseline; gap: 4px;">
+          <span id="discord-username" class="discord-username">Loading...</span>
+          <span style="font-size: 10px; color: var(--discord-muted); white-space: nowrap;"> - Discord Status</span>
         </div>
-
-        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.05);">
-          <h3 style="font-size: 0.75rem; margin-bottom: 12px; color: var(--discord-muted); letter-spacing: 0.8px; text-transform: uppercase; font-weight: 700;">Yearly Activity</h3>
-          <div class="calendar-container">
-            <img id="calendar-chart" class="calendar-img" src="https://ghchart.rshah.org/ffffff/ios7jbpro" alt="GitHub Contributions">
-          </div>
-        </div>
+        <span id="discord-status-text" class="discord-status-text">Connecting to Lanyard...</span>
       </div>
     </div>
+    <div id="discord-activity" class="discord-activity" style="display: none;">
+      <div class="activity-image-wrapper">
+        <img id="activity-large-img" class="activity-large-img" src="" alt="">
+        <img id="activity-small-img" class="activity-small-img" src="" alt="" style="display: none;">
+      </div>
+      <div class="activity-info">
+        <div id="activity-name" class="activity-name"></div>
+        <div id="activity-details" class="activity-details"></div>
+        <div id="activity-state" class="activity-state"></div>
+        <div id="activity-timestamp" class="activity-timestamp"></div>
+      </div>
+    </div>
+    <div class="discord-footer">
+      Powered by <a href="https://github.com/Phineas/lanyard" target="_blank">Lanyard</a>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="avatar">
+      <img src="https://avatars.githubusercontent.com/u/71101500?v=4" alt="profile image">
+    </div>
+    <h1>about me</h1>
+    <p class="lead">You don't need to know anything about me. Actually message me and ask if you want to know.</p>
+    <p class="lead"> </p>
+    <p class="lead"> </p>
+    <p class="lead">"Yanlış kapı çaldınız beyler..."</p>
+    <div class="links">
+      <a class="btn" href="https://ios7.xyz" target="_blank">my website</a>
+      <a class="btn" href="https://github.com/ios7jbpro" target="_blank">my github</a>
+    </div>
+
+    <div class="scrobble-container">
+      <div class="scrobble" id="lastfm">loading current track…</div>
+      <div id="audio-toggle" class="audio-toggle" title="Mute/Unmute Demo">
+        <div id="pulse" class="playing-animation"></div>
+        <svg id="speaker-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path id="vol-wave" d="M15.54 8.46a5 5 0 0 1 0 7.08"></path>
+          <line id="mute-slash" x1="1" y1="1" x2="23" y2="23" style="display: none;"></line>
+        </svg>
+      </div>
+    </div>
+    <div class="autoplay-hint">this song is being autoplayed for you to hear a demo</div>
+    <div class="edit-hint">linux sucks(i think)</div>
   </div>
 
   <script>
@@ -792,156 +583,19 @@
     const pulse = document.getElementById("pulse");
     const content = document.querySelector(".content");
     const vibeToggle = document.getElementById("vibe-toggle");
-    const expandBtn = document.getElementById("expand-btn");
-    const layoutWrapper = document.getElementById("layout-wrapper");
-    const repoList = document.getElementById("repo-list");
     const introOverlay = document.getElementById("intro-overlay");
     let hasInteracted = false;
-    let reposFetched = false;
     let currentPreviewUrl = "";
     let audioCtx, analyser, source, dataArray;
-    let snowEnabled = localStorage.getItem("snow_enabled") !== "false"; 
+    let vibrationEnabled = localStorage.getItem("vibe_enabled") !== "false"; 
 
-    expandBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const expanding = !layoutWrapper.classList.contains("expanded");
-      layoutWrapper.classList.toggle("expanded");
-      
-      if (expanding && !reposFetched) {
-        fetchGitHubRepos();
-      }
-    });
-
-    async function fetchGitHubRepos() {
-      try {
-        const response = await fetch("https://api.github.com/users/ios7jbpro/repos?sort=pushed&per_page=30");
-        const data = await response.json();
-        
-        // Popular Repos (top 3 by stars)
-        const popular = [...data]
-          .sort((a, b) => b.stargazers_count - a.stargazers_count)
-          .slice(0, 3);
-        
-        // Recent Repos (top 3 by push, excluding popular)
-        const popularIds = popular.map(r => r.id);
-        const recent = data
-          .filter(r => !popularIds.includes(r.id))
-          .slice(0, 3);
-        
-        renderRepos(popular, recent);
-        reposFetched = true;
-      } catch (error) {
-        console.error("GitHub fetch failed:", error);
-        repoList.innerHTML = '<div style="color: #f23f43;">Failed to load dashboard.</div>';
-      }
-    }
-
-    function renderRepos(popular, recent) {
-      const createCards = (list) => list.map(repo => `
-        <a href="${repo.html_url}" target="_blank" class="repo-card">
-          <span class="repo-name">${repo.name}</span>
-          ${repo.description ? `<p class="repo-desc">${repo.description}</p>` : ''}
-          <div class="repo-meta">
-            ${repo.language ? `
-              <span>
-                <span class="repo-lang-dot" style="background: ${getLangColor(repo.language)}"></span>
-                ${repo.language}
-              </span>
-            ` : ''}
-            <span>
-              <svg style="width: 12px; height: 12px; vertical-align: middle; margin-right: 2px;" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"></path>
-              </svg>${repo.stargazers_count}
-            </span>
-          </div>
-        </a>
-      `).join('');
-
-      repoList.innerHTML = `
-        <h3 style="font-size: 0.75rem; margin-bottom: 12px; color: var(--discord-muted); letter-spacing: 0.8px; text-transform: uppercase; font-weight: 700;">Popular Projects</h3>
-        ${createCards(popular)}
-        <h3 style="font-size: 0.75rem; margin: 20px 0 12px; color: var(--discord-muted); letter-spacing: 0.8px; text-transform: uppercase; font-weight: 700;">Recently Updated</h3>
-        ${createCards(recent)}
-      `;
-    }
-
-    function getLangColor(lang) {
-      const colors = {
-        JavaScript: "#f1e05a",
-        Python: "#3572A5",
-        HTML: "#e34c26",
-        CSS: "#563d7c",
-        Java: "#b07219",
-        TypeScript: "#3178c6",
-        C: "#555555",
-        "C++": "#f34b7d",
-        Go: "#00ADD8",
-        Swift: "#F05138"
-      };
-      return colors[lang] || '#80848e';
-    }
-    // Snow System
-    const canvas = document.getElementById("snow-canvas");
-    const ctx = canvas.getContext("2d");
-    let particles = [];
-    const particleCount = 150;
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    class Particle {
-      constructor() {
-        this.reset();
-      }
-
-      reset() {
-        this.x = Math.random() * canvas.width * 1.5; // Start further right for diagonal fall
-        this.y = -20;
-        this.size = Math.random() * 3 + 1;
-        this.baseSpeedX = -(Math.random() * 2 + 1); // Base wind to left
-        this.baseSpeedY = Math.random() * 1 + 1; // Base fall
-        this.opacity = Math.random() * 0.5 + 0.3;
-      }
-
-      update(intensity) {
-        // Speed scaling based on audio intensity
-        const speedMult = 1 + intensity * 4; 
-        this.x += this.baseSpeedX * speedMult;
-        this.y += this.baseSpeedY * speedMult;
-
-        // Reset if off bottom or far left
-        if (this.y > canvas.height || this.x < -20) {
-          this.reset();
-          // Occasionally spawn from right edge instead of just top
-          if (Math.random() > 0.5) {
-             this.x = canvas.width + 20;
-             this.y = Math.random() * canvas.height;
-          }
-        }
-      }
-
-      draw() {
-        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
     audio.volume = 0.3;
     audio.muted = false;
 
     // Initialize toggle state UI
     function updateVibeToggleUI() {
-      vibeToggle.textContent = snowEnabled ? "SNOW: ON" : "SNOW: OFF";
-      if (snowEnabled) {
+      vibeToggle.textContent = vibrationEnabled ? "VIBE: ON" : "VIBE: OFF";
+      if (vibrationEnabled) {
         vibeToggle.classList.remove("off");
       } else {
         vibeToggle.classList.add("off");
@@ -950,11 +604,11 @@
     updateVibeToggleUI();
 
     vibeToggle.addEventListener("click", () => {
-      snowEnabled = !snowEnabled;
-      localStorage.setItem("snow_enabled", snowEnabled);
+      vibrationEnabled = !vibrationEnabled;
+      localStorage.setItem("vibe_enabled", vibrationEnabled);
       updateVibeToggleUI();
-      if (!snowEnabled) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (!vibrationEnabled) {
+        content.style.transform = "scale(1) translate(0, 0)";
       }
     });
 
@@ -969,7 +623,7 @@
         source.connect(analyser);
         analyser.connect(audioCtx.destination);
         dataArray = new Uint8Array(analyser.frequencyBinCount);
-        requestAnimationFrame(snowLoop);
+        requestAnimationFrame(vibrateLoop);
       } catch (e) {
         console.warn("Web Audio API not supported or blocked:", e);
       }
@@ -980,34 +634,33 @@
       if (hasInteracted) initVisualizer();
     };
 
-    let currentIntensity = 0;
-    const smoothing = 0.1; // Lower is smoother
-
-    function snowLoop() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      let targetIntensity = 0;
-      if (analyser && !audio.paused && !audio.muted) {
-        analyser.getByteFrequencyData(dataArray);
-        let sum = 0;
-        const bassRange = 15;
-        for (let i = 0; i < bassRange; i++) {
-          sum += dataArray[i];
-        }
-        targetIntensity = sum / (bassRange * 255);
+    function vibrateLoop() {
+      if (!analyser || audio.paused || audio.muted || !vibrationEnabled) {
+        content.style.transform = "scale(1) translate(0, 0)";
+        requestAnimationFrame(vibrateLoop);
+        return;
       }
 
-      // Smooth the intensity
-      currentIntensity += (targetIntensity - currentIntensity) * smoothing;
+      analyser.getByteFrequencyData(dataArray);
 
-      if (snowEnabled) {
-        particles.forEach(p => {
-          p.update(currentIntensity);
-          p.draw();
-        });
+      // Focus on lower frequencies for a "bass-linked" vibration
+      let sum = 0;
+      const bassRange = 15;
+      for (let i = 0; i < bassRange; i++) {
+        sum += dataArray[i];
       }
+      const average = sum / bassRange;
 
-      requestAnimationFrame(snowLoop);
+      // Calculate scale and jitter for a stronger "speaker-like" vibration
+      const intensity = average / 255;
+      const scale = 1 + (intensity * 0.04); // Stronger pulse (up to 1.04x)
+      const jitterX = (Math.random() - 0.5) * (intensity * 4); // More noticeable jitter
+      const jitterY = (Math.random() - 0.5) * (intensity * 4);
+      const rotate = (Math.random() - 0.5) * (intensity * 1.5); // Add a tiny rotation shake
+
+      content.style.transform = `scale(${scale}) translate(${jitterX}px, ${jitterY}px) rotate(${rotate}deg)`;
+
+      requestAnimationFrame(vibrateLoop);
     }
 
     async function fetchScrobble() {
@@ -1044,14 +697,12 @@
             console.warn("iTunes fetch failed:", ituneErr);
           }
 
-          // Update background artwork and dynamic accent
+          // Update background artwork
           if (artwork && artwork !== "") {
             const img = new Image();
-            img.crossOrigin = "anonymous";
             img.onload = () => {
               bgArtwork.style.backgroundImage = `url('${artwork}')`;
               bgArtwork.style.opacity = "1";
-              updateDynamicAccent(img);
             };
             img.src = artwork;
           } else {
@@ -1318,66 +969,6 @@
         return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
       }
       return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    }
-
-    function updateDynamicAccent(img) {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = 1;
-      canvas.height = 1;
-
-      try {
-        ctx.drawImage(img, 0, 0, 1, 1);
-        const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
-        
-        // Convert to HSL
-        let { h, s, l } = rgbToHsl(r, g, b);
-        
-        // Ensure color is bright enough (min 60% lightness)
-        if (l < 0.6) l = 0.65;
-        // Boost saturation for vibrancy
-        if (s < 0.4) s = 0.6;
-
-        const hslColor = `hsl(${h}, ${s * 100}%, ${l * 100}%)`;
-        document.documentElement.style.setProperty('--accent', hslColor);
-        
-        // Update Calendar Color
-        const hex = hslToHex(h, s * 100, l * 100);
-        document.getElementById("calendar-chart").src = `https://ghchart.rshah.org/${hex}/ios7jbpro`;
-      } catch (e) {
-        console.warn("Could not extract color:", e);
-      }
-    }
-
-    function hslToHex(h, s, l) {
-      l /= 100;
-      const a = s * Math.min(l, 1 - l) / 100;
-      const f = n => {
-        const k = (n + h / 30) % 12;
-        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-        return Math.round(255 * color).toString(16).padStart(2, '0');
-      };
-      return `${f(0)}${f(8)}${f(4)}`;
-    }
-
-    function rgbToHsl(r, g, b) {
-      r /= 255; g /= 255; b /= 255;
-      const max = Math.max(r, g, b), min = Math.min(r, g, b);
-      let h, s, l = (max + min) / 2;
-
-      if (max === min) {
-        h = s = 0;
-      } else {
-        const d = max - min;
-        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-        switch (max) {
-          case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-          case g: h = (b - r) / d + 2; break;
-          case b: h = (r - g) / d + 4; break;
-        }
-        h /= 6;
-      }
-      return { h: h * 360, s, l };
     }
 
     connectLanyard();
