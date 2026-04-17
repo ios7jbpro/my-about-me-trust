@@ -5,6 +5,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>about me</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* Define the custom monospace font */
     @font-face {
@@ -25,6 +28,14 @@
       --accent: #00ffff;
       /* Cyan accent color */
       color-scheme: dark;
+      --discord-bg: #111214;
+      --discord-card: #1e1f22;
+      --discord-online: #23a55a;
+      --discord-idle: #f0b232;
+      --discord-dnd: #f23f43;
+      --discord-offline: #80848e;
+      --discord-text: #f2f3f5;
+      --discord-muted: #b5bac1;
     }
 
     html,
@@ -318,6 +329,178 @@
       50% { opacity: 1; transform: scale(1); }
       100% { opacity: 0.4; transform: scale(0.98); }
     }
+    /* Discord Rich Presence Card */
+    .discord-card {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--discord-card);
+      border-radius: 8px;
+      padding: 16px;
+      width: 100%;
+      max-width: 300px;
+      text-align: left;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0;
+      transform: translateX(50px);
+      pointer-events: auto;
+    }
+
+    .discord-card.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .discord-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .discord-avatar-wrapper {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+
+    .discord-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #313338;
+    }
+
+    .discord-status-dot {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 3px solid var(--discord-card);
+    }
+
+    .status-online { background: var(--discord-online); }
+    .status-idle { 
+      background: var(--discord-idle); 
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 15% 15%, 15% 85%, 85% 85%, 85% 15%, 15% 15%); /* Mimic Discord's moon shape roughly */
+    }
+    .status-dnd { background: var(--discord-dnd); }
+    .status-offline { background: var(--discord-offline); }
+
+    .discord-user-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .discord-username {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--discord-text);
+    }
+
+    .discord-status-text {
+      font-size: 12px;
+      color: var(--discord-muted);
+      margin-top: 2px;
+    }
+
+    .discord-activity {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 12px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .activity-image-wrapper {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      flex-shrink: 0;
+    }
+
+    .activity-large-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .activity-small-img {
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--discord-card);
+    }
+
+    .activity-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .activity-name {
+      font-weight: 700;
+      font-size: 13px;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .activity-details, .activity-state, .activity-timestamp {
+      font-size: 12px;
+      color: var(--discord-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .activity-timestamp {
+      font-weight: 500;
+    }
+
+    .discord-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 10px;
+      margin-top: 10px;
+      font-size: 10px;
+      color: var(--discord-muted);
+      opacity: 0.7;
+    }
+
+    .discord-footer a {
+      color: var(--discord-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .discord-footer a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    @keyframes discord-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(35, 165, 90, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(35, 165, 90, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(35, 165, 90, 0); }
+    }
+
+    .status-online.pulse {
+      animation: discord-pulse 2s infinite;
+    }
   </style>
 </head>
 
@@ -329,6 +512,38 @@
   <div id="bg-artwork" class="bg-artwork"></div>
   <button id="vibe-toggle" class="vibe-toggle">VIBE: ON</button>
   <audio id="audio-preview" crossorigin="anonymous" loop autoplay unmuted></audio>
+
+  <!-- Discord Rich Presence Card -->
+  <div id="discord-card" class="discord-card">
+    <div class="discord-header">
+      <div class="discord-avatar-wrapper">
+        <img id="discord-avatar" class="discord-avatar" src="" alt="">
+        <div id="discord-status-dot" class="discord-status-dot"></div>
+      </div>
+      <div class="discord-user-info">
+        <div style="display: flex; align-items: baseline; gap: 4px;">
+          <span id="discord-username" class="discord-username">Loading...</span>
+          <span style="font-size: 10px; color: var(--discord-muted); white-space: nowrap;"> - Discord Status</span>
+        </div>
+        <span id="discord-status-text" class="discord-status-text">Connecting to Lanyard...</span>
+      </div>
+    </div>
+    <div id="discord-activity" class="discord-activity" style="display: none;">
+      <div class="activity-image-wrapper">
+        <img id="activity-large-img" class="activity-large-img" src="" alt="">
+        <img id="activity-small-img" class="activity-small-img" src="" alt="" style="display: none;">
+      </div>
+      <div class="activity-info">
+        <div id="activity-name" class="activity-name"></div>
+        <div id="activity-details" class="activity-details"></div>
+        <div id="activity-state" class="activity-state"></div>
+        <div id="activity-timestamp" class="activity-timestamp"></div>
+      </div>
+    </div>
+    <div class="discord-footer">
+      Powered by <a href="https://github.com/Phineas/lanyard" target="_blank">Lanyard</a>
+    </div>
+  </div>
 
   <div class="content">
     <div class="avatar">
@@ -343,6 +558,7 @@
       <a class="btn" href="https://ios7.xyz" target="_blank">my website</a>
       <a class="btn" href="https://github.com/ios7jbpro" target="_blank">my github</a>
     </div>
+
     <div class="scrobble-container">
       <div class="scrobble" id="lastfm">loading current track…</div>
       <div id="audio-toggle" class="audio-toggle" title="Mute/Unmute Demo">
@@ -588,6 +804,174 @@
         }, 1000);
       }
     });
+
+    // Lanyard Integration
+    const DISCORD_ID = "364009879603511298";
+    const discordCard = document.getElementById("discord-card");
+    const discordAvatar = document.getElementById("discord-avatar");
+    const discordStatusDot = document.getElementById("discord-status-dot");
+    const discordUsername = document.getElementById("discord-username");
+    const discordStatusText = document.getElementById("discord-status-text");
+    const discordActivity = document.getElementById("discord-activity");
+    const activityName = document.getElementById("activity-name");
+    const activityDetails = document.getElementById("activity-details");
+    const activityState = document.getElementById("activity-state");
+    const activityTimestamp = document.getElementById("activity-timestamp");
+    const activityLargeImg = document.getElementById("activity-large-img");
+    const activitySmallImg = document.getElementById("activity-small-img");
+
+    let lanyardSocket = null;
+    let activityInterval = null;
+
+    function connectLanyard() {
+      lanyardSocket = new WebSocket("wss://api.lanyard.rest/socket");
+
+      lanyardSocket.onopen = () => {
+        console.log("Lanyard WebSocket connected");
+      };
+
+      lanyardSocket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+
+        if (data.op === 1) { // Hello
+          lanyardSocket.send(JSON.stringify({
+            op: 2,
+            d: { subscribe_to_id: DISCORD_ID }
+          }));
+
+          setInterval(() => {
+            lanyardSocket.send(JSON.stringify({ op: 3 }));
+          }, data.d.heartbeat_interval);
+        }
+
+        if (data.op === 0) { // Event
+          if (data.t === "INIT_STATE" || data.t === "PRESENCE_UPDATE") {
+            updatePresence(data.d);
+          }
+        }
+      };
+
+      lanyardSocket.onclose = () => {
+        console.log("Lanyard WebSocket closed, reconnecting...");
+        setTimeout(connectLanyard, 5000);
+      };
+    }
+
+    function updatePresence(data) {
+      discordCard.classList.add("visible");
+      
+      const user = data.discord_user;
+      const status = data.discord_status;
+      const activities = data.activities;
+
+      discordUsername.textContent = `${user.display_name || user.username}`;
+      discordAvatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=160`;
+      
+      discordStatusDot.className = `discord-status-dot status-${status}`;
+      if (status === "online") {
+        discordStatusDot.classList.add("pulse");
+      }
+
+      const spotify = data.spotify;
+      const game = activities.find(a => a.type === 0); // Playing
+      const custom = activities.find(a => a.type === 4); // Custom Status
+
+      let mainActivity = null;
+      if (spotify) {
+        mainActivity = {
+          name: "Spotify",
+          details: spotify.track,
+          state: `by ${spotify.artist}`,
+          large_img: spotify.album_art_url,
+          small_img: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg",
+          start: spotify.timestamps.start,
+          end: spotify.timestamps.end
+        };
+      } else if (game) {
+        let largeImg = null;
+        if (game.assets?.large_image) {
+          if (game.assets.large_image.startsWith("mp:external")) {
+            largeImg = game.assets.large_image.replace(/mp:external\/.*\/(https?)\//, '$1://');
+          } else {
+            largeImg = `https://cdn.discordapp.com/app-assets/${game.application_id}/${game.assets.large_image}.png`;
+          }
+        }
+
+        let smallImg = null;
+        if (game.assets?.small_image) {
+          if (game.assets.small_image.startsWith("mp:external")) {
+            smallImg = game.assets.small_image.replace(/mp:external\/.*\/(https?)\//, '$1://');
+          } else {
+            smallImg = `https://cdn.discordapp.com/app-assets/${game.application_id}/${game.assets.small_image}.png`;
+          }
+        }
+
+        mainActivity = {
+          name: game.name,
+          details: game.details || "",
+          state: game.state || "",
+          large_img: largeImg,
+          small_img: smallImg,
+          start: game.timestamps?.start
+        };
+      }
+
+      if (mainActivity) {
+        discordActivity.style.display = "flex";
+        activityName.textContent = mainActivity.name;
+        activityDetails.textContent = mainActivity.details;
+        activityState.textContent = mainActivity.state;
+        
+        if (mainActivity.large_img) {
+          activityLargeImg.src = mainActivity.large_img;
+          activityLargeImg.style.display = "block";
+        } else {
+          activityLargeImg.style.display = "none";
+        }
+
+        if (mainActivity.small_img) {
+          activitySmallImg.src = mainActivity.small_img;
+          activitySmallImg.style.display = "block";
+        } else {
+          activitySmallImg.style.display = "none";
+        }
+
+        discordStatusText.textContent = `Playing ${mainActivity.name}`;
+
+        if (activityInterval) clearInterval(activityInterval);
+        
+        const updateTime = () => {
+          if (mainActivity.start) {
+             const now = Date.now();
+             const elapsed = now - mainActivity.start;
+             activityTimestamp.textContent = formatTime(elapsed) + " elapsed";
+          } else {
+             activityTimestamp.textContent = "";
+          }
+        };
+        
+        updateTime();
+        activityInterval = setInterval(updateTime, 1000);
+
+      } else {
+        discordActivity.style.display = "none";
+        discordStatusText.textContent = custom?.state || status.charAt(0).toUpperCase() + status.slice(1);
+        if (activityInterval) clearInterval(activityInterval);
+      }
+    }
+
+    function formatTime(ms) {
+      const seconds = Math.floor((ms / 1000) % 60);
+      const minutes = Math.floor((ms / (1000 * 60)) % 60);
+      const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+
+      if (hours > 0) {
+        return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
+      return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    connectLanyard();
 
     // Fetch scrobble data when the page loads
     fetchScrobble();
