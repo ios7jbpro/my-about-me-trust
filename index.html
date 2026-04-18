@@ -93,33 +93,73 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 20px;
-      width: 90%;
-      max-width: 1200px;
-      margin: auto;
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow: hidden;
       transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
+    @media (min-width: 851px) {
+      .layout-wrapper {
+        position: relative;
+        gap: 20px;
+        width: 90%;
+        max-width: 1200px;
+        height: auto;
+        margin: auto;
+        overflow: visible;
+      }
+    }
+
+
     .side-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(100%);
+      width: 100%;
+      height: 100%;
+      z-index: 100;
       background: var(--discord-card);
-      border-radius: 12px;
-      width: 0;
-      opacity: 0;
-      overflow: hidden;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(15px);
-      transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, padding 0.5s ease;
-      padding: 0;
-      height: 600px;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s;
       font-family: 'Inter', sans-serif;
+      padding: 0;
+      visibility: hidden;
+      box-sizing: border-box;
     }
 
     .layout-wrapper.expanded .side-panel {
-      width: 350px;
-      opacity: 1;
-      padding: 24px;
+      transform: translateX(0);
+      visibility: visible;
+    }
+
+    @media (min-width: 851px) {
+      .side-panel {
+        position: relative;
+        left: 0;
+        width: 0;
+        height: 600px;
+        border-radius: 12px;
+        opacity: 0;
+        overflow: hidden;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, padding 0.5s ease;
+        visibility: visible;
+      }
+
+      .layout-wrapper.expanded .side-panel {
+        transform: none;
+        width: 350px;
+        opacity: 1;
+        padding: 24px;
+      }
     }
 
     .expand-btn {
@@ -407,49 +447,6 @@
     }
 
     /* Responsive adjustments */
-    @media (max-width: 850px) {
-      .layout-wrapper {
-        flex-direction: column;
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-      }
-
-      .layout-wrapper.expanded .side-panel {
-        width: 100%;
-        max-width: 450px;
-        height: auto;
-        min-height: 200px;
-      }
-    }
-
-    @media (max-width: 520px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      p.lead {
-        font-size: 0.9rem;
-      }
-
-      a.btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-      }
-
-      .scrobble {
-        font-size: 0.8rem;
-      }
-
-      .edit-hint {
-        font-size: 0.7rem;
-      }
-
-      .audio-toggle {
-        bottom: 15px;
-        right: 15px;
-        padding: 0.6rem;
-      }
-    }
 
     /* Small Discord-style secondary button */
     .vibe-toggle {
@@ -513,19 +510,33 @@
     }
     /* Discord Rich Presence Card */
     .discord-card {
+      position: absolute;
+      top: 0;
+      left: 0;
       background: var(--discord-card);
-      border-radius: 12px;
       padding: 24px;
       width: 100%;
-      max-width: 450px;
+      height: 100%;
       text-align: left;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(15px);
       transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(0);
       pointer-events: auto;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    @media (min-width: 601px) {
+      .discord-card {
+        position: relative;
+        border-radius: 12px;
+        max-width: 450px;
+        height: auto;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        transform: translateY(20px);
+      }
     }
 
     .discord-card.visible {
@@ -679,6 +690,86 @@
     .status-online.pulse {
       animation: discord-pulse 2s infinite;
     }
+
+    /* Responsive adjustments */
+    /* Responsive adjustments */
+    @media (max-width: 850px) {
+      .layout-wrapper {
+        flex-direction: column;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+      }
+
+      .layout-wrapper.expanded .side-panel {
+        width: 100%;
+        max-width: 450px;
+        height: auto;
+        min-height: 200px;
+      }
+    }
+
+    /* Mobile Specific Fixes */
+    @media (max-width: 600px) {
+      /* Enforce strict overflow control */
+      html, body {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        position: relative;
+      }
+
+      .mobile-side-header {
+        display: flex !important;
+      }
+      .repo-list {
+        padding: 24px !important;
+      }
+      .side-panel > div:last-child {
+        padding: 0 24px 24px 24px !important;
+      }
+      .links {
+        flex-direction: column !important;
+        gap: 12px !important;
+      }
+      .links a.btn {
+        width: 100% !important;
+        flex: none !important;
+        padding: 1rem !important;
+      }
+      .side-panel {
+        max-width: none !important;
+        background: var(--discord-card) !important;
+      }
+      .layout-wrapper.expanded .side-panel {
+        max-width: none !important;
+      }
+      .discord-header {
+        /* Ensure the expand button stays on the right */
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+      }
+      .discord-user-info {
+        margin-left: 0 !important;
+        overflow: hidden;
+      }
+      .discord-user-info span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .scrobble-container {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+        padding: 1rem !important;
+      }
+      .scrobble {
+        font-size: 0.85rem !important;
+        word-break: break-word !important;
+        line-height: 1.4 !important;
+      }
+      h1 { font-size: 1.6rem !important; }
+      p.lead { font-size: 0.9rem !important; }
+    }
   </style>
 </head>
 
@@ -770,6 +861,12 @@
 
       <!-- Side Panel for Repositories -->
       <div id="side-panel" class="side-panel" style="background: rgba(30, 31, 34, 0.85);">
+        <div class="mobile-side-header" style="display: none; align-items: center; padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); gap: 12px;">
+          <button id="side-close-btn" class="expand-btn" style="transform: rotate(180deg);">
+            <img src="expand.png" alt="back">
+          </button>
+          <span style="font-weight: 600; font-size: 0.9rem; font-family: 'Inter', sans-serif;">Repository Dashboard</span>
+        </div>
         <div id="repo-list" class="repo-list" style="flex: 1; overflow-y: auto;">
           <div style="color: var(--discord-muted); font-size: 0.9rem;">Loading dashboard...</div>
         </div>
@@ -810,6 +907,10 @@
       if (expanding && !reposFetched) {
         fetchGitHubRepos();
       }
+    });
+
+    document.getElementById("side-close-btn").addEventListener("click", () => {
+      layoutWrapper.classList.remove("expanded");
     });
 
     async function fetchGitHubRepos() {
